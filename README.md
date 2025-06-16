@@ -32,3 +32,39 @@ This project — BIZZ — is my way of combining **AI**, **cybersecurity**, and 
 | BIZZ v2 Architecture Planning    | 🛠️ Ongoing    |
 
 > ⚠️ **Note:** This project is in early development. Some logic is simulated. Real AI features will be enabled once I connect
+
+---
+
+
+## 📁 Project Structure
+BIZZ-AI-Cybersecurity-Assistant/
+├── app.py
+├── requirements.txt
+├── .env.example
+├── static/
+│ └── (CSS or assets here)
+├── templates/
+│ ├── index.html
+│ └── result.html
+└── README.md
+
+---
+
+## 📦 Installation (Local Dev)
+
+```
+# Clone the repo
+git clone https://github.com/ma-quinnn/BIZZ-AI-Cybersecurity-Assistant.git
+cd BIZZ-AI-Cybersecurity-Assistant
+
+# Create virtual environment (optional)
+python -m venv venv
+venv\Scripts\activate  # On Windows
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Create your own .env file (based on .env.example)
+# Then run the app
+python app.py
+```
