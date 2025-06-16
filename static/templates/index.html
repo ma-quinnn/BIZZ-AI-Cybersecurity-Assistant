@@ -1,0 +1,111 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BIZZ - Your Business AI Agent</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #030244;
+            padding: 30px;
+        }
+        .chat-box {
+            max-width: 600px;
+            margin: auto;
+            background: rgb(69, 142, 216);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .user-msg, .bizz-msg {
+            margin: 10px 0;
+            padding: 10px 15px;
+            border-radius: 8px;
+            line-height: 1.5;
+            max-width: 80%;
+        }
+        .user-msg {
+            background-color: #6ac7ec;
+            align-self: flex-end;
+            text-align: right;
+            margin-left: auto;
+        }
+        .bizz-msg {
+            background-color: #f8d7da;
+            align-self: flex-start;
+            text-align: left;
+            margin-right: auto;
+        }
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+        }
+        form {
+            display: flex;
+            margin-top: 20px;
+            gap: 10px;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #5abaf2;
+            color: black;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-box">
+        <h2>BIZZ - Your Business AI Agent</h2>
+        <div class="chat-container" id="chat-container"></div>
+        <form id="chat-form">
+            <input type="text" id="user-input" placeholder="Ask BIZZ a question..." required>
+            <button type="submit">Send</button>
+        </form>
+    </div>
+
+    <script>
+        const chatContainer = document.getElementById('chat-container');
+        const chatForm = document.getElementById('chat-form');
+        const userInput = document.getElementById('user-input');
+
+        chatForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const userMessage = userInput.value;
+            appendMessage('user-msg', userMessage);
+            userInput.value = '';
+
+            try {
+                const response = await fetch('/ask', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ question: userMessage })
+                });
+
+                const data = await response.json();
+
+                if (data.answer) {
+                    appendMessage('bizz-msg', data.answer);
+                } else if (data.error) {
+                    appendMessage('bizz-msg', '❌ ' + data.error);
+                }
+            } catch (error) {
+                appendMessage('bizz-msg', '⚠️ Network error: ' + error.message);
+            }
+        });
+
+        function appendMessage(className, message) {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = className;
+            msgDiv.textContent = message;
+            chatContainer.appendChild(msgDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+    </script>
+</body>
+</html>
